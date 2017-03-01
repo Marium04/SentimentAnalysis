@@ -11,7 +11,7 @@ const cors = require('cors');
 
 const app = express();
 const api = require('../server/api');
-//const fbApi = require('../server/FbApi');
+const fbApi = require('../server/FbApi');
 
 // Parsers for POST data
 app.use(bodyParser.json());
@@ -19,7 +19,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 
 app.use(cors());
-//app.use('/fb',fbApi);
+app.use('/fb',fbApi);
 app.use('/api',api);
 
 // Point static path to dist

@@ -1,1 +1,14 @@
-<chart [options]="options" style="min-width: 1200px; height: 600px; margin: 0 auto"></chart>
+<div class="col-lg-12">
+  <div class="row">
+    <a routerLink="/" routerLinkActive="active"><-Back</a>
+    <div class="col-lg-12 animate-bottom">
+      <div id="chartStats"class="table-bordered rounded"  >
+        <label style="font-weight: bold">Total Reviews</label> <p style="display:inline;">{{totalReviews}}</p><br/>
+        <label style="font-weight: bold">-ve Reviews</label> <p style="display:inline;">{{negativeReviews}}</p><br/>
+        <label style="font-weight: bold">+ve Reviews</label> <p style="display:inline;">{{positiveReviews}}</p>
+      </div>
+
+      <chart [options]="options"></chart>
+    </div>
+  </div>
+</div>

@@ -1,1 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
+body {
+
+font-family: "Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica, sans-serif;
+}
+
+
+.headerDiv {
+  padding-bottom: 1rem;
+  border-bottom: .05rem solid #e5e5e5;
+  margin-bottom: 6rem;
+  margin-top: 3rem;
+}

@@ -7,12 +7,13 @@ import { Routes, RouterModule} from '@angular/router';
 import {ModuleWithProviders} from "@angular/core";
 import {D3ChartComponent} from "./Components/d3chart/d3chart.component";
 import {HighchartsComponent} from "./Components/highcharts/highcharts.component";
+import {HomeComponent} from "./Components/home/home.component";
 
 const appRoutes: Routes = [
   // Add the redirect
   {
     path: '',
-    redirectTo: '/',
+    redirectTo: '/home',
     pathMatch: 'full'
   },
   // Add our routes
@@ -23,6 +24,9 @@ const appRoutes: Routes = [
   {
     path: 'highcharts',
     component: HighchartsComponent
+  },{
+    path: 'home',
+    component: HomeComponent
   }
 ];
 export const appRoutingProviders: any[] = [

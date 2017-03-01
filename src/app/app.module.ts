@@ -13,11 +13,14 @@ export function highchartsFactory() {
 }
 import {routing} from "../app.routing";
 import { HighchartsComponent } from '../Components/highcharts/highcharts.component';
+import { HomeComponent } from '../Components/home/home.component';
+import {DataSharingService} from "../service/data/data-sharing.service";
 @NgModule({
   declarations: [
     AppComponent,
     D3ChartComponent,
     HighchartsComponent,
+    HomeComponent,
 
   ],
   imports: [
@@ -27,7 +30,7 @@ import { HighchartsComponent } from '../Components/highcharts/highcharts.compone
     HttpModule,
     ChartModule
   ],
-  providers: [D3Service,SentimentAnalysisService,{
+  providers: [DataSharingService,D3Service,SentimentAnalysisService,{
     provide: HighchartsStatic,
     useFactory: highchartsFactory
   }],

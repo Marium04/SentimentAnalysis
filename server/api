@@ -1,38 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const configurations = require('../server/config');
-const API_KEY = configurations.cognitiveService_API_KEY;
 const salient = require('salient');
-const request = require('request');
 
 router.get("/keyConcerns",function (req,res) {
   res.json(Object.keys(configurations.keyPhrases));
-})
-
-router.get("/sentimentAnalysis",function(req,res){
-  var analyser = new salient.sentiment.BayesSentimentAnalyser();
-  var sentimentResults = [];
-  var count = 0;
-  configurations.comments.map(function(review,index){
-    sentimentResults.push({sentiment:analyser.classify(review) <=0 ?'Negative':'Positive'/*,id:index*/,text:review,keyPhrases :[]});
-    count++;
-    Object.keys(configurations.keyPhrases).map(function (keyword) {
-      var notInKeyPhrases = true;
-        configurations.keyPhrases[keyword].map(function(phrase) {
-          if (review.toLowerCase().includes(phrase.toLowerCase()) && notInKeyPhrases) {
-            sentimentResults[index].keyPhrases.push(keyword);
-            notInKeyPhrases = false;
-          }
-        });
-    });
-    if(count === configurations.comments.length){
-      res.json(sentimentResults);
-    }
-  });
-});
-
-router.get("/keyPhrases",function(){
-
 });
 
 
