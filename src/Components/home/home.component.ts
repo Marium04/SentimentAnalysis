@@ -62,11 +62,6 @@ export class HomeComponent implements OnInit {
 
   }
 
-  valueChanged(event, message) {
-    event.target.parentNode.setAttribute("class", "form-group");
-    message.innerHTML = "";
-  }
-
 
   fetchData(ds,ps,from,to){
     const self = this;

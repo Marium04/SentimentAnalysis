@@ -91,7 +91,7 @@ export class D3ChartComponent implements OnInit {
       .attr("onmouseout","evt.target.setAttribute('opacity', '1');")
       .on('mousemove',function(d){
         div.html("<p>"+d.key +" : "+d.value+"</p>")
-          .style("left",(self.d3.event.pageX -60 ) + "px")
+          .style("left",(self.d3.event.pageX -150) + "px")
           .style("top",(self.d3.event.pageY - 220) + "px");
       })
       .on('mouseover',function(){
