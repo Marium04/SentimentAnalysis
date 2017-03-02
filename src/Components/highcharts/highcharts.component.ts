@@ -30,42 +30,6 @@ export class HighchartsComponent implements OnInit {
     self.positiveReviews = self.dataService.sharedData["positiveReviews"];
     self.negativeReviews = self.dataService.sharedData["negativeReviews"];
     self.createChart();
-
-
-    /*self.sentimentService.getKeyConcerns().then(keywordsArray =>{
-      keywordsArray.map(function (word) {
-        self.sentiObjectArray.push({negativeCount: 0, positiveCount: 0,name:word});
-        self.keywords.push(word);
-
-      });
-    }).then(function(){
-      self.sentimentService.getSentimentData().then((data)=>{
-        data.map(function (obj) {
-          if (obj.sentiment === "Negative")
-            self.negativeReviews++;
-          if (obj.sentiment === "Positive")
-            self.positiveReviews ++;
-          self.totalReviews++;
-          if(obj.keyPhrases.length===0)
-            return;
-          obj.keyPhrases.map(function (phrase) {
-            if (obj.sentiment === "Negative") {
-              self.sentiObjectArray[_.findLastIndex(self.sentiObjectArray, {
-                name: phrase
-              })].negativeCount++;
-            }
-            if (obj.sentiment === "Positive") {
-              self.sentiObjectArray[_.findLastIndex(self.sentiObjectArray, {
-                name: phrase
-              })].positiveCount++;
-            }
-          });
-        });
-        self.sentiObjectArray = _.sortBy(self.sentiObjectArray,"negativeCount").reverse();
-        self.keywords.sort();
-        self.createChart();
-      });
-    });*/
   }
   createChart(){
     let self = this;

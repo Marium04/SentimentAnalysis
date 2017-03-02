@@ -15,13 +15,7 @@
         </select>
       </div>
 
-      <div class="form-group">
-        <label for="chartType">Select graph type</label>
-        <select class="form-control" id="chartType" #chartType>
-          <option>D3</option>
-          <option>High Charts</option>
-        </select>
-      </div>
+
       <div class="form-group">
         <label for="fromDate" class="col-form-label">From</label>
         <input class="form-control" type="date" value="2016-12-01" id="fromDate" #fromDate (change)="valueChanged($event,fromMessage)">
@@ -32,7 +26,7 @@
         <input class="form-control" type="date" value="2016-12-10" id="toDate" #toDate (change)="valueChanged($event,toMessage)">
         <div class='form-control-feedback' #toMessage></div>
       </div>
-      <button class="btn btn-primary btn-block" (click)="generateGraph(dataSource.value,dataSourcePage.value,chartType.value,fromDate,toDate,fromMessage,toMessage)">Generate Graph</button>
+      <button class="btn btn-primary btn-block" (click)="generateGraph(dataSource.value,dataSourcePage.value,fromDate,toDate,fromMessage,toMessage)">Generate Graph</button>
     </div>
   </div>
   <div class="row" *ngIf="buttonClicked === true" >

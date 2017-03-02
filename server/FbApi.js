@@ -26,7 +26,8 @@ router.get('/',function(req,res){
       responseData = data;
     else
       responseData = err;
-    console.log(responseData.data.length+ " posts found from ");
+    console.log("   =========================================================================  ")
+    console.log(responseData.data.length+ " posts found from " + req.query.from +" to "+ req.query.to);
     postIds = _.pluck(responseData.data,'id');
     var commentsResult = [];
     for(var i=0;i<postIds.length;i++) {

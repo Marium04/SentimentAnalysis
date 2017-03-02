@@ -1,6 +1,5 @@
 import {Component, OnInit, ElementRef, ViewEncapsulation} from '@angular/core';
 import {D3Service, D3, } from 'd3-ng2-service';
-import {SentimentAnalysisService} from "../../service/sentiment-service/sentiment-analysis.service";
 
 import {DataSharingService} from "../../service/data/data-sharing.service";
 @Component({
@@ -20,17 +19,15 @@ export class D3ChartComponent implements OnInit {
   negativeReviews: number =0;
   positiveReviews: number =0;
   private containerWidth: number;
-  constructor(element: ElementRef, d3Service: D3Service,private sentimentService:SentimentAnalysisService,private dataService:DataSharingService) {
+  constructor(element: ElementRef, d3Service: D3Service,private dataService:DataSharingService) {
     this.d3 = d3Service.getD3();
     this.parentNativeElement = element.nativeElement;
-    console.log(this.dataService.sharedData);
 
   }
 
 
   ngOnInit(): void {
     this.containerWidth = this.parentNativeElement.getBoundingClientRect().width;
-    console.log(this.containerWidth);
     this.getData();
   }
   getData(){
@@ -94,8 +91,8 @@ export class D3ChartComponent implements OnInit {
       .attr("onmouseout","evt.target.setAttribute('opacity', '1');")
       .on('mousemove',function(d){
         div.html("<p>"+d.key +" : "+d.value+"</p>")
-          .style("left",(self.d3.event.pageX -95 ) + "px")
-          .style("top",(self.d3.event.pageY ) + "px");
+          .style("left",(self.d3.event.pageX -60 ) + "px")
+          .style("top",(self.d3.event.pageY - 220) + "px");
       })
       .on('mouseover',function(){
         div.style("display", "inline");

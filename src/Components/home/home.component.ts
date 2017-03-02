@@ -10,14 +10,13 @@ import * as _ from "underscore";
 })
 export class HomeComponent implements OnInit {
   private buttonClicked: boolean = false;
-  private chartType: string;
   ngOnInit() {
   }
 
   constructor(private router: Router,private dataService:DataSharingService,private sentimentService:SentimentAnalysisService) {
   }
 
-  generateGraph(dataSource, pageSource, chartType, from, to, fromMessage, toMessage) {
+  generateGraph(dataSource, pageSource, from, to, fromMessage, toMessage) {
     if (from.value === "") {
       from.parentNode.setAttribute("class", " form-group has-danger");
       from.setAttribute("class", "form-control form-control-danger");
@@ -30,6 +29,7 @@ export class HomeComponent implements OnInit {
       toMessage.innerHTML = "Please enter a valid date.";
       return;
     }
+
     let fromDate = new Date(from.value.toString() + "T00:00:00");
     let toDate = new Date(to.value.toString() + "T00:00:00");
     if (fromDate >= toDate) {
@@ -38,8 +38,26 @@ export class HomeComponent implements OnInit {
       fromMessage.innerHTML = "From date should be less than the to date.";
       return;
     }
+    let diffDays = Math.abs((fromDate.getTime() - toDate.getTime()) / (24 * 60 * 60 * 1000));
+    if(diffDays>20){
+      from.parentNode.setAttribute("class", " form-group has-danger");
+      from.setAttribute("class", "form-control form-control-danger");
+      fromMessage.innerHTML = "The difference between from and to date should be less than 20 days.";
+      return;
+    }
+    if(fromDate>new Date()){
+      from.parentNode.setAttribute("class", " form-group has-danger");
+      from.setAttribute("class", "form-control form-control-danger");
+      fromMessage.innerHTML = "Please don't select future date ";
+      return;
+    }
+    if(toDate>new Date()){
+      to.parentNode.setAttribute("class", " form-group has-danger");
+      to.setAttribute("class", "form-control form-control-danger");
+      toMessage.innerHTML = "Please don't select future date ";
+      return;
+    }
     this.buttonClicked = true;
-    this.chartType = chartType;
     this.fetchData(dataSource,pageSource,from.value,to.value)
 
   }
@@ -107,12 +125,7 @@ export class HomeComponent implements OnInit {
         negativeReviews: negativeReviews
       }
     }).then(function(){
-      if (self.chartType === "High Charts") {
-        self.router.navigateByUrl('/highcharts');
-      }
-      else if (self.chartType === "D3") {
-        self.router.navigateByUrl('/d3');
-      }
+      self.router.navigateByUrl('/d3');
     });
   }
 
