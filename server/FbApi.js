@@ -45,7 +45,6 @@ router.get('/',function(req,res){
             sentimentScore = analyser.classify(review) <= 0 ? 'Negative' : 'Positive';
           }
           catch(e){
-            //console.log("Exception "+ review);
             failed = true;
             expectedTotal--;
           }
@@ -63,7 +62,7 @@ router.get('/',function(req,res){
             });
             if(count === expectedTotal) {
               console.log("Total reviews analyzed :: "+ expectedTotal);
-              res.json(sentimentResults);
+              res.json({data:sentimentResults,keyConcerns:Object.keys(configurations.keyPhrases)});
             }
           }
           else{

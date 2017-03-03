@@ -1,7 +1,8 @@
 import {Component, OnInit, ElementRef, ViewEncapsulation} from '@angular/core';
 import {D3Service, D3, } from 'd3-ng2-service';
-
-import {DataSharingService} from "../../service/data/data-sharing.service";
+import * as _ from 'underscore';
+import {DataSharingService} from "../../Services/data/data-sharing.service";
+import {Router} from "@angular/router";
 @Component({
   selector: 'app-barchart',
   encapsulation: ViewEncapsulation.None,
@@ -19,7 +20,7 @@ export class D3ChartComponent implements OnInit {
   negativeReviews: number =0;
   positiveReviews: number =0;
   private containerWidth: number;
-  constructor(element: ElementRef, d3Service: D3Service,private dataService:DataSharingService) {
+  constructor(element: ElementRef, d3Service: D3Service,private dataService:DataSharingService,private router:Router) {
     this.d3 = d3Service.getD3();
     this.parentNativeElement = element.nativeElement;
 
@@ -32,14 +33,17 @@ export class D3ChartComponent implements OnInit {
   }
   getData(){
     const  self = this;
-    self.finalData = self.dataService.sharedData["finalData"];
-    self.keywords = self.dataService.sharedData["keywords"];
-    self.sentiKeys = self.dataService.sharedData["sentiKeys"];
-    self.totalReviews = self.dataService.sharedData["totalReviews"];
-    self.positiveReviews = self.dataService.sharedData["positiveReviews"];
-    self.negativeReviews = self.dataService.sharedData["negativeReviews"];
-    self.createChart();
-
+    if(_.keys(self.dataService.sharedData).length === 0)
+      self.router.navigateByUrl('/');
+    else {
+      self.finalData = self.dataService.sharedData["finalData"];
+      self.keywords = self.dataService.sharedData["keywords"];
+      self.sentiKeys = self.dataService.sharedData["sentiKeys"];
+      self.totalReviews = self.dataService.sharedData["totalReviews"];
+      self.positiveReviews = self.dataService.sharedData["positiveReviews"];
+      self.negativeReviews = self.dataService.sharedData["negativeReviews"];
+      self.createChart();
+    }
   }
   createChart() {
     let self = this;
@@ -60,7 +64,7 @@ export class D3ChartComponent implements OnInit {
       .range([height, 0]);
 
     let z = self.d3.scaleOrdinal()
-      .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+      .range(["#ff6666","#66c2ff"]);
 
     let div = self.d3.select("app-barchart").append("div")
       .attr("class", "barTooltip");

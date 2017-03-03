@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
-import {DataSharingService} from "../../service/data/data-sharing.service";
-import {SentimentAnalysisService} from "../../service/sentiment-service/sentiment-analysis.service";
+import {DataSharingService} from "../../Services/data/data-sharing.service";
+import {SentimentAnalysisService} from "../../Services/sentiment/sentiment-analysis.service";
 import * as _ from "underscore";
 @Component({
   selector: 'app-home',
@@ -72,14 +72,12 @@ export class HomeComponent implements OnInit {
     let totalReviews = 0;
     let finalData = [];
     let sentiKeys = [];
-    self.sentimentService.getKeyConcerns().then(keywordsArray =>{
-      keywordsArray.map(function (word) {
+    self.sentimentService.getSentimentData(ds,ps,from,to).then((data)=>{
+      data.keyConcerns.map(function (word) {
         sentiObject[word] = {negativeCount: 0, positiveCount: 0};
         keywords.push(word);
       });
-    });
-    self.sentimentService.getSentimentData(ds,ps,from,to).then((data)=>{
-      data.map(function (obj) {
+      data.data.map(function (obj) {
         if (obj.sentiment === "Negative")
           negativeReviews++;
         if (obj.sentiment === "Positive")

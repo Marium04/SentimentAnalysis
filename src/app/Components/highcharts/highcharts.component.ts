@@ -1,7 +1,7 @@
 import {Component, OnInit, ElementRef} from '@angular/core';
-import {SentimentAnalysisService} from "../../service/sentiment-service/sentiment-analysis.service";
 import * as _ from "underscore";
-import {DataSharingService} from "../../service/data/data-sharing.service";
+import {DataSharingService} from "../../Services/data/data-sharing.service";
+import {Router} from "@angular/router";
 @Component({
   selector: 'app-highcharts',
   templateUrl: 'highcharts.component.html',
@@ -15,7 +15,7 @@ export class HighchartsComponent implements OnInit {
   private containerWidth:number;
   private nativeElement;
   options: Object;
-  constructor(private sentimentService:SentimentAnalysisService,element: ElementRef,private dataService:DataSharingService) {
+  constructor(element: ElementRef,private dataService:DataSharingService,private router: Router) {
     this.nativeElement = element.nativeElement;
   }
 
@@ -25,15 +25,20 @@ export class HighchartsComponent implements OnInit {
   }
   getData(){
     const  self = this;
-    self.sentiObjectArray = self.dataService.sharedData["finalData"];
-    self.totalReviews = self.dataService.sharedData["totalReviews"];
-    self.positiveReviews = self.dataService.sharedData["positiveReviews"];
-    self.negativeReviews = self.dataService.sharedData["negativeReviews"];
-    self.createChart();
+    if(_.keys(self.dataService.sharedData).length === 0)
+      self.router.navigateByUrl('/');
+    else {
+      self.sentiObjectArray = self.dataService.sharedData["finalData"];
+      self.totalReviews = self.dataService.sharedData["totalReviews"];
+      self.positiveReviews = self.dataService.sharedData["positiveReviews"];
+      self.negativeReviews = self.dataService.sharedData["negativeReviews"];
+      self.createChart();
+    }
   }
   createChart(){
     let self = this;
     self.options = {
+      colors: ["#ff6666","#66c2ff"],
       chart: {
         type: 'column',
         zoomType:'x',
