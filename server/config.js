@@ -9,7 +9,8 @@ module.exports = {
       "Deliver"
     ],
     "Customer Service": [
-      "Customer Service"
+      "Customer Service",
+      "Customer Care"
     ],
     Refund: [
       "Refund",

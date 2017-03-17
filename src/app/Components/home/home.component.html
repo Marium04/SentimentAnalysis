@@ -1,6 +1,16 @@
 <div class="col-lg-6 offset-lg-3 ">
-  <div class="row" *ngIf="buttonClicked === false" >
+  <div class="row" *ngIf="noData" >
+    <div class="col-lg-12 text-center">
+      <div class=" alert-warning " role="alert">
+        <p>{{serverMessage}}</p>
+      </div>
+    </div>
+  </div>
+  <div class="row" [hidden]="!(buttonClicked === false)" >
     <div class="col-lg-12">
+      <div class="form-group">
+        <a class="" (click)="authService.logout()">Log out</a>
+      </div>
       <div class="form-group">
         <label for="dataSource">Reviews Source</label>
         <select  id="dataSource" #dataSource class="form-control">
@@ -18,12 +28,12 @@
 
       <div class="form-group">
         <label for="fromDate" class="col-form-label">From</label>
-        <input class="form-control" type="date" value="2016-12-01" id="fromDate" #fromDate (change)="fromMessage.parentNode.setAttribute('class', 'form-group');toMessage.parentNode.setAttribute('class', 'form-group');fromMessage.innerHTML='';toMessage.innerHTML=''">
+        <input class="form-control" type="date" placeholder="yyyy-mm-dd" value="2016-12-01" id="fromDate" #fromDate (change)="fromMessage.parentNode.setAttribute('class', 'form-group');toMessage.parentNode.setAttribute('class', 'form-group');fromMessage.innerHTML='';toMessage.innerHTML='';noData=false">
         <div class='form-control-feedback' #fromMessage></div>
       </div>
       <div class="form-group">
         <label for="toDate" class="col-form-label">To</label>
-        <input class="form-control" type="date" value="2016-12-10" id="toDate" #toDate (change)="fromMessage.parentNode.setAttribute('class', 'form-group');toMessage.parentNode.setAttribute('class', 'form-group');fromMessage.innerHTML='';toMessage.innerHTML=''">
+        <input class="form-control" type="date" placeholder="yyyy-mm-dd" value="2016-12-10" id="toDate" #toDate (change)="fromMessage.parentNode.setAttribute('class', 'form-group');toMessage.parentNode.setAttribute('class', 'form-group');fromMessage.innerHTML='';toMessage.innerHTML='';noData=false">
         <div class='form-control-feedback' #toMessage></div>
       </div>
       <button class="btn btn-primary btn-block" (click)="generateGraph(dataSource.value,dataSourcePage.value,fromDate,toDate,fromMessage,toMessage)">Generate Graph</button>

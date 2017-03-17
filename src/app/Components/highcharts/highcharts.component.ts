@@ -38,7 +38,7 @@ export class HighchartsComponent implements OnInit {
   createChart(){
     let self = this;
     self.options = {
-      colors: ["#ff6666","#66c2ff"],
+      colors: ["#ff6666","#4682b4"],
       chart: {
         type: 'column',
         zoomType:'x',

@@ -21,18 +21,39 @@ graph.setVersion("2.8");
 
 router.get('/',function(req,res){
   var responseData;
+  var from,to;
+  from = new Date(req.query.from+ "T00:00:00");
+  if(from == "Invalid Date"){
+    console.log("Invalid from date");
+    return res.json({data:[],keyConcerns:Object.keys(configurations.keyPhrases),message:"Invalid from date"})
+  }
+  to = new Date(req.query.to+ "T00:00:00");
+  if(to == "Invalid Date"){
+    console.log("Invalid to date");
+    return res.json({data:[],keyConcerns:Object.keys(configurations.keyPhrases),message:"Invalid to date"})
+  }
   graph.get(searsFbPageId+'/posts?since='+req.query.from+'&until='+req.query.to+'&limit=100', function(err, data) {
     if(!err)
       responseData = data;
-    else
-      responseData = err;
-    console.log("   =========================================================================  ")
+    else{
+      console.log("Error occurred");
+      return res.json({error:err});
+    }
+      console.log("   =========================================================================  ");
+    if(responseData.data.length === 0) {
+      console.log("No posts found");
+      return res.json({data:[],keyConcerns:Object.keys(configurations.keyPhrases),message:"No posts found"});
+    }
     console.log(responseData.data.length+ " posts found from " + req.query.from +" to "+ req.query.to);
     postIds = _.pluck(responseData.data,'id');
     var commentsResult = [];
     for(var i=0;i<postIds.length;i++) {
       getAllComments(postIds[i], '', commentsResult, i, postIds.length-1, function (data) {
         var comments = (_.flatten(data));
+        if(comments.length === 0) {
+          console.log("No comments found");
+          return res.json({data:[],keyConcerns:Object.keys(configurations.keyPhrases),message:"No comments found"});
+        }
         console.log(comments.length+ " comments found");
         var analyser = new salient.sentiment.BayesSentimentAnalyser();
         var sentimentResults = [];
@@ -60,13 +81,17 @@ router.get('/',function(req,res){
                 }
               });
             });
-            if(count === expectedTotal) {
+            if(count === expectedTotal && index === comments.length-1) {
               console.log("Total reviews analyzed :: "+ expectedTotal);
-              res.json({data:sentimentResults,keyConcerns:Object.keys(configurations.keyPhrases)});
+              return res.json({data:sentimentResults,keyConcerns:Object.keys(configurations.keyPhrases)});
             }
           }
           else{
             failed = false;
+            if(count === expectedTotal && index === comments.length-1) {
+              console.log("Total reviews analyzed :: "+ expectedTotal);
+              return res.json({data:sentimentResults,keyConcerns:Object.keys(configurations.keyPhrases)});
+            }
           }
         });
       });

@@ -1,0 +1,9 @@
+body div.auth0-lock-header{
+  display: none;
+}
+body #a0-lock.a0-theme-default div.a0-lock-header-welcome{
+  display: none;
+}
+body #a0-lock.a0-theme-default .auth0-lock-header-bg .auth0-lock-blur-support{
+  display: none;
+}

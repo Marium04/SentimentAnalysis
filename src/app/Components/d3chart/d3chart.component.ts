@@ -64,7 +64,7 @@ export class D3ChartComponent implements OnInit {
       .range([height, 0]);
 
     let z = self.d3.scaleOrdinal()
-      .range(["#ff6666","#66c2ff"]);
+      .range(["#ff6666","#4682b4"]);
 
     let div = self.d3.select("app-barchart").append("div")
       .attr("class", "barTooltip");
@@ -94,7 +94,7 @@ export class D3ChartComponent implements OnInit {
       .attr("onmouseover","evt.target.setAttribute('opacity', '0.5');")
       .attr("onmouseout","evt.target.setAttribute('opacity', '1');")
       .on('mousemove',function(d){
-        div.html("<p>"+d.key +" : "+d.value+"</p>")
+        div.html("<p>"+((d.key === "positiveCount")?"Positive":"Negative") +" : "+d.value+"</p>")
           .style("left",(self.d3.event.pageX -150) + "px")
           .style("top",(self.d3.event.pageY - 220) + "px");
       })
