@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Http, URLSearchParams} from "@angular/http";
+import {Http, URLSearchParams, Headers, RequestOptions} from "@angular/http";
 import 'rxjs/add/operator/toPromise';
 
 @Injectable()
@@ -12,7 +12,9 @@ export class SentimentAnalysisService {
     params.set("pageSource",pageSource);
     params.set("from",from);
     params.set("to",to);
-    return this.http.get(this.sentimentAnalysisUrl,{search:params}).toPromise().then(response => response.json()).catch(SentimentAnalysisService.handleError);
+    let headers = new Headers({ 'Authorization': 'Bearer ' + localStorage.getItem("id_token") });
+    let options = new RequestOptions({ headers: headers,search:params });
+    return this.http.get(this.sentimentAnalysisUrl,options).toPromise().then(response => response.json()).catch(SentimentAnalysisService.handleError);
   }
   public static handleError(error: any):  Promise<any>{
     console.error('An error occurred', error);

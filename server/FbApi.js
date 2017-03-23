@@ -12,14 +12,18 @@ var app_secret= configurations.app_secret;
 var searsFbPageId= configurations.searsFbPageId;
 var postIds = [];
 const salient = require('salient');
+const jwt = require('express-jwt');
 graph.setAccessToken(access_token);
 graph.setAppSecret(app_secret);
 graph.setVersion("2.8");
 
 
+const authCheck = jwt({
+  secret: 'qxruQjaTL36d4fe_xaggo9UxZ2zavr1HGYWMWyFWrxg52QlnAM20yuF3LaTD5gmT',
+  audience: 'hqA2VSPhhT61bteOVOYTDdNXLN27WPY0'
+});
 
-
-router.get('/',function(req,res){
+router.get('/',authCheck,function(req,res){
   var responseData;
   var from,to;
   from = new Date(req.query.from+ "T00:00:00");
