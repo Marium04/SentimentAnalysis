@@ -14,7 +14,7 @@ const appRoutes: Routes = [
   // Add the redirect
   {
     path: '',
-    redirectTo: '/login',
+    redirectTo: '/home',
     pathMatch: 'full'
   },
   // Add our routes

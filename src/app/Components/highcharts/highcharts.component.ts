@@ -26,7 +26,7 @@ export class HighchartsComponent implements OnInit {
   getData(){
     const  self = this;
     if(_.keys(self.dataService.sharedData).length === 0)
-      self.router.navigateByUrl('/');
+      self.router.navigateByUrl('');
     else {
       self.sentiObjectArray = self.dataService.sharedData["finalData"];
       self.totalReviews = self.dataService.sharedData["totalReviews"];

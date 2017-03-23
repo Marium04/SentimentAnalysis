@@ -16,19 +16,19 @@ export class AuthService {
   private authorizationError: string ="";
   constructor(private router:Router) {
     const self = this;
-    this.lock.on('authenticated', (authResult: any) => {
-      console.log(authResult.idToken);
+    self.lock.on('authenticated', (authResult: any) => {
       localStorage.setItem('id_token', authResult.idToken);
-      this.lock.getProfile(authResult.idToken, (error: any, profile: any) => {
+      self.authorizationError="";
+      self.lock.getProfile(authResult.idToken, (error: any, profile: any) => {
         if (error) {
           console.log(error);
         }
         localStorage.setItem('profile', JSON.stringify(profile));
-        //self.router.navigateByUrl('/home');
+        self.lock.hide();
+        self.router.navigateByUrl('');
       });
-      self.authorizationError="";
     });
-    this.lock.on('authorization_error', function(authError) {
+    self.lock.on('authorization_error', function(authError) {
       self.authorizationError = authError;
     });
   }

@@ -3,7 +3,6 @@ import {Router} from "@angular/router";
 import {DataSharingService} from "../../Services/data/data-sharing.service";
 import {SentimentAnalysisService} from "../../Services/sentiment/sentiment-analysis.service";
 import * as _ from "underscore";
-import {AuthService} from "../../Services/login/auth.service";
 @Component({
   selector: 'app-home',
   templateUrl: 'home.component.html',
@@ -18,7 +17,7 @@ export class HomeComponent implements OnInit {
     this.serverMessage = '';
   }
 
-  constructor(private router: Router,private dataService:DataSharingService,private sentimentService:SentimentAnalysisService,private authService:AuthService) {
+  constructor(private router: Router,private dataService:DataSharingService,private sentimentService:SentimentAnalysisService) {
     this.dataService.sharedData={};
     /*this.buttonClicked = false;*/
   }
@@ -197,5 +196,8 @@ export class HomeComponent implements OnInit {
     var regEx = /^\d{4}-\d{2}-\d{2}$/;
     return dateString.match(regEx) != null;
   }
-
+  logout(){
+    localStorage.clear();
+    this.router.navigateByUrl('/login');
+  }
 }

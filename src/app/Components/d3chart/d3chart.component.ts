@@ -34,7 +34,7 @@ export class D3ChartComponent implements OnInit {
   getData(){
     const  self = this;
     if(_.keys(self.dataService.sharedData).length === 0)
-      self.router.navigateByUrl('/');
+      self.router.navigateByUrl('');
     else {
       self.finalData = self.dataService.sharedData["finalData"];
       self.keywords = self.dataService.sharedData["keywords"];
