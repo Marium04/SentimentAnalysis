@@ -26,6 +26,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
 import {AuthConfig, AuthHttp} from "angular2-jwt";
 import {AuthService} from "./Services/login/auth.service";
 import { LoginComponent } from './Components/login/login.component';
+import {Ng2PaginationModule} from "ng2-pagination";
 @NgModule({
   declarations: [
     AppComponent,
@@ -39,7 +40,8 @@ import { LoginComponent } from './Components/login/login.component';
     routing,
     FormsModule,
     HttpModule,
-    ChartModule
+    ChartModule,
+    Ng2PaginationModule
   ],
   providers: [appRoutingProviders,{
     provide: AuthHttp,

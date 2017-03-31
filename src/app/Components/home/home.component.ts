@@ -130,6 +130,7 @@ export class HomeComponent implements OnInit {
   fetchData(ds,ps,from,to){
     const self = this;
     let sentiObject ={};
+    let commentsPerKeyConcern ={};
     let keywords= [];
     let negativeReviews = 0;
     let positiveReviews = 0;
@@ -139,6 +140,7 @@ export class HomeComponent implements OnInit {
     self.sentimentService.getSentimentData(ds,ps,from,to).then((data)=>{
       data.keyConcerns.map(function (word) {
         sentiObject[word] = {negativeCount: 0, positiveCount: 0};
+        commentsPerKeyConcern[word] = {negativeComments: [], positiveComments: []};
         keywords.push(word);
       });
       if(data.data.length === 0) {
@@ -156,10 +158,14 @@ export class HomeComponent implements OnInit {
         if(obj.keyPhrases.length===0)
           return;
         obj.keyPhrases.map(function (phrase) {
-          if (obj.sentiment === "Negative")
+          if (obj.sentiment === "Negative") {
             sentiObject[phrase].negativeCount++;
-          if (obj.sentiment === "Positive")
+            commentsPerKeyConcern[phrase].negativeComments.push(obj.text);
+          }
+          if (obj.sentiment === "Positive") {
             sentiObject[phrase].positiveCount++;
+            commentsPerKeyConcern[phrase].positiveComments.push(obj.text);
+          }
         });
       });
       keywords.sort();
@@ -185,7 +191,14 @@ export class HomeComponent implements OnInit {
         keywords:keywords,
         totalReviews:totalReviews,
         positiveReviews: positiveReviews,
-        negativeReviews: negativeReviews
+        negativeReviews: negativeReviews,
+        comments:self.format(commentsPerKeyConcern)
+      }
+    },
+      (error) => {
+      if(error.status!=200){
+        self.router.navigateByUrl('/login');
+        localStorage.clear();
       }
     }).then(function(){
       if(_.keys(self.dataService.sharedData).length !== 0)
@@ -199,5 +212,27 @@ export class HomeComponent implements OnInit {
   logout(){
     localStorage.clear();
     this.router.navigateByUrl('/login');
+  }
+  format(commentsObject){
+    var maxLength;
+    var commentsKeys = Object.keys(commentsObject);
+    var formattedForTable = {};
+    commentsKeys.map((commKey)=>{
+      formattedForTable[commKey] = [];
+      var curr = commentsObject[commKey];
+      if(curr.negativeComments.length>curr.positiveComments.length){
+        maxLength = curr.negativeComments.length;
+      }
+      else if(curr.negativeComments.length<curr.positiveComments.length){
+        maxLength = curr.positiveComments.length;
+      }
+      for(var i=0;i<maxLength;i++){
+
+       formattedForTable[commKey].push({
+         negative:(i>=curr.negativeComments.length)?'':curr.negativeComments[i],
+         positive:(i>=curr.positiveComments.length)?'':curr.positiveComments[i]});
+      }
+    });
+    return formattedForTable;
   }
 }

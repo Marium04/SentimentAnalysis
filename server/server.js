@@ -17,7 +17,7 @@ const fbApi = require('../server/FbApi');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/fb',responseTime(function (req, res, time) {
-  var stat = (req.method + " "+ req.url)
+  var stat = (req.method + " "+ req.url);
   console.log(stat," ", (time/1000),"s")
 }));
 

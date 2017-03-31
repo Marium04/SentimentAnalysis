@@ -53,7 +53,7 @@ router.get('/',authCheck,function(req,res){
     var commentsResult = [];
     for(var i=0;i<postIds.length;i++) {
       getAllComments(postIds[i], '', commentsResult, i, postIds.length-1, function (data) {
-        var comments = (_.flatten(data));
+        var comments = (_.uniq(_.flatten(data)));
         if(comments.length === 0) {
           console.log("No comments found");
           return res.json({data:[],keyConcerns:Object.keys(configurations.keyPhrases),message:"No comments found"});
@@ -79,7 +79,7 @@ router.get('/',authCheck,function(req,res){
             Object.keys(configurations.keyPhrases).map(function (keyword) {
               var notInKeyPhrases = true;
               configurations.keyPhrases[keyword].map(function(phrase) {
-                if (review.toLowerCase().includes(phrase.toLowerCase()) && notInKeyPhrases) {
+                if (findWordInaString(review.toLowerCase(),phrase.toLowerCase()) && notInKeyPhrases) {
                   sentimentResults[sentimentResults.length-1].keyPhrases.push(keyword);
                   notInKeyPhrases = false;
                 }
@@ -123,5 +123,8 @@ getAllComments = function(postId,nextCursor,endResult,index,totalPosts,callback)
       }
     }
   });
-}
+};
+findWordInaString= function (str,word){
+  return new RegExp('\\W'+word+'\\W','g').test(str);
+};
 module.exports = router;

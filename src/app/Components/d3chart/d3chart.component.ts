@@ -3,6 +3,7 @@ import {D3Service, D3, } from 'd3-ng2-service';
 import * as _ from 'underscore';
 import {DataSharingService} from "../../Services/data/data-sharing.service";
 import {Router} from "@angular/router";
+declare var $: any;
 @Component({
   selector: 'app-barchart',
   encapsulation: ViewEncapsulation.None,
@@ -19,6 +20,9 @@ export class D3ChartComponent implements OnInit {
   totalReviews: number =0;
   negativeReviews: number =0;
   positiveReviews: number =0;
+  private modalTableData = [];
+  private page: number = 1;
+  private keyConcern:string = '';
   private containerWidth: number;
   constructor(element: ElementRef, d3Service: D3Service,private dataService:DataSharingService,private router:Router) {
     this.d3 = d3Service.getD3();
@@ -28,8 +32,12 @@ export class D3ChartComponent implements OnInit {
 
 
   ngOnInit(): void {
+    const self = this;
     this.containerWidth = this.parentNativeElement.getBoundingClientRect().width;
     this.getData();
+    $('#commentsModal').on('hidden.bs.modal', function (e) {
+      self.page = 1;
+    });
   }
   getData(){
     const  self = this;
@@ -84,6 +92,9 @@ export class D3ChartComponent implements OnInit {
       .attr("transform", function (d) {
         return "translate(" + x0(d.name) + ",0)";
       })
+      .attr("data-keyconcern",function (d) {
+        return d.name;
+      })
       .selectAll("rect")
       .data(function (d) {
         return self.sentiKeys.map(function (key) {
@@ -100,6 +111,11 @@ export class D3ChartComponent implements OnInit {
       })
       .on('mouseover',function(){
         div.style("display", "inline");
+      })
+      .on('click',function(){
+        $('#commentsModal').modal('show');
+        self.keyConcern = self.d3.event.target.parentElement.getAttribute('data-keyconcern');
+        self.modalTableData = self.dataService.sharedData['comments'][self.keyConcern];
       })
       .on('mouseout',function(){
         div.style("display", "none");

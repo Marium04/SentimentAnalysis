@@ -29,3 +29,10 @@
   text-align: right;
 }
 
+.td-text{
+  width:300px;
+  max-width:300px;
+  word-wrap: break-word;
+  font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+  font-size:small;
+}

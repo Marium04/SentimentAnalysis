@@ -35,7 +35,10 @@ module.exports = {
       "Credit card",
       "Card",
       "Already charged",
-      "Charge"
+      "Charge",
+      "Charged",
+      "Debit",
+      "Debited"
     ],
     Appliances: [
       "Appliances"
@@ -82,7 +85,7 @@ module.exports = {
       "Rep",
       "Sales person"
     ],
-    Wait:[
+    "Wait Time":[
       "Wait",
       "Waiting",
       "Still wait"

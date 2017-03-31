@@ -2,6 +2,7 @@ import {Component, OnInit, ElementRef} from '@angular/core';
 import * as _ from "underscore";
 import {DataSharingService} from "../../Services/data/data-sharing.service";
 import {Router} from "@angular/router";
+declare var $: any;
 @Component({
   selector: 'app-highcharts',
   templateUrl: 'highcharts.component.html',
@@ -14,14 +15,21 @@ export class HighchartsComponent implements OnInit {
   private sentiObjectArray=[];
   private containerWidth:number;
   private nativeElement;
+  private page: number = 1;
+  private modalTableData = [];
+  private keyConcern:string = '';
   options: Object;
   constructor(element: ElementRef,private dataService:DataSharingService,private router: Router) {
     this.nativeElement = element.nativeElement;
   }
 
   ngOnInit() {
-    this.containerWidth = this.nativeElement.getBoundingClientRect().width;
-    this.getData();
+    const self = this;
+    self.containerWidth = this.nativeElement.getBoundingClientRect().width;
+    self.getData();
+    $('#commentsModal').on('hidden.bs.modal', function (e) {
+      self.page = 1;
+    });
   }
   getData(){
     const  self = this;
@@ -73,6 +81,18 @@ export class HighchartsComponent implements OnInit {
         column: {
           pointPadding: 0.2,
           borderWidth: 0
+        },
+        series: {
+          cursor: 'pointer',
+          point: {
+            events: {
+              click: function () {
+                $('#commentsModal').modal('show');
+                self.keyConcern = this.category;
+                self.modalTableData = self.dataService.sharedData['comments'][self.keyConcern];
+              }
+            }
+          }
         }
       },
       series: [{name:"Negative Reviews",data:_.pluck(self.sentiObjectArray,'negativeCount')},{name:"Positive Reviews",data:_.pluck(self.sentiObjectArray,'positiveCount')}]
