@@ -1,6 +1,6 @@
 import { browser, element, by } from 'protractor';
 
-export class CaSearsSentimentAnalysisPage {
+export class SentimentAnalysisPage {
   navigateTo() {
     return browser.get('/');
   }

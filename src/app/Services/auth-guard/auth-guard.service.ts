@@ -10,12 +10,12 @@ export class AuthGuard implements CanActivate {
 
   canActivate() {
     // If user is not logged in we'll send them to the login page
-    if (!localStorage.getItem("id_token")) {
+    if (!localStorage.getItem('token')) {
       this.router.navigateByUrl('/login');
       return false;
-    }
-    else
+    } else {
       return true;
+    }
   }
 
 }

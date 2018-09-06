@@ -1,25 +1,25 @@
 import { Injectable } from '@angular/core';
-import {Router} from "@angular/router";
-import {tokenNotExpired} from "angular2-jwt";
+import {Router} from '@angular/router';
+import {tokenNotExpired} from 'angular2-jwt';
 
-let Auth0Lock = require('auth0-lock').default;
+const Auth0Lock = require('auth0-lock').default;
 @Injectable()
 export class AuthService {
-  lock = new Auth0Lock('hqA2VSPhhT61bteOVOYTDdNXLN27WPY0', 'maskri.auth0.com',{
+  lock = new Auth0Lock('4VBQKJRQfYEpUeX5h2m9wr1T9gTVhKi7', 'askmarium.auth0.com', {
     rememberLastLogin: false,
     allowedConnections: ['google-oauth2'],
     container: 'auth-login-container',
     languageDictionary: {
-      title: "",
+      title: '',
     }
   });
-  private authorizationError: string ="";
-  constructor(private router:Router) {
+  private authorizationError = '';
+  constructor(private router: Router) {
     const self = this;
     self.lock.on('authenticated', (authResult: any) => {
-      localStorage.setItem('id_token', authResult.idToken);
-      self.authorizationError="";
-      self.lock.getProfile(authResult.idToken, (error: any, profile: any) => {
+      localStorage.setItem('token', authResult.accessToken);
+      self.authorizationError = '';
+      self.lock.getProfile(authResult.accessToken, (error: any, profile: any) => {
         if (error) {
           console.log(error);
         }
@@ -36,10 +36,10 @@ export class AuthService {
     localStorage.clear();
     this.router.navigateByUrl('/login');
   }
-  loggedIn(){
+  loggedIn() {
     return tokenNotExpired();
   }
-  checkAuthorizationError(){
+  checkAuthorizationError() {
     return this.authorizationError;
   }
 }

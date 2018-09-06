@@ -1,10 +1,10 @@
-import { CaSearsSentimentAnalysisPage } from './app.po';
+import { SentimentAnalysisPage } from './app.po';
 
-describe('ca-sears-sentiment-analysis App', function() {
-  let page: CaSearsSentimentAnalysisPage;
+describe('sentiment-analysis App', function() {
+  let page: SentimentAnalysisPage;
 
   beforeEach(() => {
-    page = new CaSearsSentimentAnalysisPage();
+    page = new SentimentAnalysisPage();
   });
 
   it('should display message saying app works', () => {

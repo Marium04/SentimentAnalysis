@@ -12,6 +12,7 @@ export class HomeComponent implements OnInit {
   private buttonClicked: boolean = false;
   private noData: boolean = false;
   private serverMessage: string = '';
+  private serverErrorMessage: string = '';
   ngOnInit() {
     this.noData = false;
     this.serverMessage = '';
@@ -25,44 +26,44 @@ export class HomeComponent implements OnInit {
   generateGraph(dataSource, pageSource, from, to, fromMessage, toMessage) {
 
     if (from.value === "" && to.value === "" ) {
-      from.parentNode.setAttribute("class", " form-group has-danger");
-      from.setAttribute("class", "form-control form-control-danger");
-      fromMessage.innerHTML = "Please enter a valid date.";
-      to.parentNode.setAttribute("class", " form-group has-danger");
-      to.setAttribute("class", "form-control form-control-danger");
-      toMessage.innerHTML = "Please enter a valid date.";
+      from.parentNode.setAttribute('class', ' form-group has-danger');
+      from.setAttribute('class', 'form-control form-control-danger');
+      fromMessage.innerHTML = 'Please enter a valid date.';
+      to.parentNode.setAttribute('class', ' form-group has-danger');
+      to.setAttribute('class', 'form-control form-control-danger');
+      toMessage.innerHTML = 'Please enter a valid date.';
       return;
     }
-    if (from.value === "") {
-      from.parentNode.setAttribute("class", " form-group has-danger");
-      from.setAttribute("class", "form-control form-control-danger");
-      fromMessage.innerHTML = "Please enter a valid date.";
+    if (from.value === '') {
+      from.parentNode.setAttribute('class', ' form-group has-danger');
+      from.setAttribute('class', 'form-control form-control-danger');
+      fromMessage.innerHTML = 'Please enter a valid date.';
       return;
     }
-    if (to.value === "") {
-      to.parentNode.setAttribute("class", " form-group has-danger");
-      to.setAttribute("class", "form-control form-control-danger");
-      toMessage.innerHTML = "Please enter a valid date.";
+    if (to.value === '') {
+      to.parentNode.setAttribute('class', ' form-group has-danger');
+      to.setAttribute('class', 'form-control form-control-danger');
+      toMessage.innerHTML = 'Please enter a valid date.';
       return;
     }
 
 
-    let fromDate = new Date(from.value.toString() + "T00:00:00");
-    let toDate = new Date(to.value.toString() + "T00:00:00");
+    const fromDate = new Date(from.value.toString() + 'T00:00:00');
+    const toDate = new Date(to.value.toString() + 'T00:00:00');
 
-    if(fromDate.toString() === "Invalid Date" && toDate.toString() === "Invalid Date"){
-      to.parentNode.setAttribute("class", " form-group has-danger");
-      to.setAttribute("class", "form-control form-control-danger");
-      toMessage.innerHTML = "Please enter a valid date.";
-      from.parentNode.setAttribute("class", " form-group has-danger");
-      from.setAttribute("class", "form-control form-control-danger");
-      fromMessage.innerHTML = "Please enter a valid date.";
+    if(fromDate.toString() === 'Invalid Date' && toDate.toString() === 'Invalid Date') {
+      to.parentNode.setAttribute('class', ' form-group has-danger');
+      to.setAttribute('class', 'form-control form-control-danger');
+      toMessage.innerHTML = 'Please enter a valid date.';
+      from.parentNode.setAttribute('class', ' form-group has-danger');
+      from.setAttribute('class', 'form-control form-control-danger');
+      fromMessage.innerHTML = 'Please enter a valid date.';
       return;
     }
-    if(fromDate.toString() === "Invalid Date"){
-      from.parentNode.setAttribute("class", " form-group has-danger");
-      from.setAttribute("class", "form-control form-control-danger");
-      fromMessage.innerHTML = "Please enter a valid date.";
+    if(fromDate.toString() === 'Invalid Date') {
+      from.parentNode.setAttribute('class', ' form-group has-danger');
+      from.setAttribute('class', 'form-control form-control-danger');
+      fromMessage.innerHTML = 'Please enter a valid date.';
       return
     }
     if(toDate.toString() === "Invalid Date"){
@@ -186,17 +187,20 @@ export class HomeComponent implements OnInit {
       sentiKeys = Object.keys(finalData[0]).slice(1);
       keywords = _.pluck(finalData,"name");
       self.dataService.sharedData={
-        finalData:finalData,
-        sentiKeys:sentiKeys,
-        keywords:keywords,
-        totalReviews:totalReviews,
+        finalData: finalData,
+        sentiKeys: sentiKeys,
+        keywords: keywords,
+        totalReviews: totalReviews,
         positiveReviews: positiveReviews,
         negativeReviews: negativeReviews,
-        comments:self.format(commentsPerKeyConcern)
-      }
+        comments: self.format(commentsPerKeyConcern)
+      };
     },
       (error) => {
-      if(error.status!=200){
+      if (error.status === 500) {
+        self.serverErrorMessage = JSON.parse(error._body).message;
+        self.buttonClicked = false;
+      } else if (error.status !== 200 ) {
         self.router.navigateByUrl('/login');
         localStorage.clear();
       }
