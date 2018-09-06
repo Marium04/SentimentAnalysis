@@ -30,5 +30,5 @@ Run `ng github-pages:deploy` to deploy to GitHub Pages.
 
 To get more help on the `angular-cli` use `ng help` or go check out the [Angular-CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
 
-#Project update
+## Project update
 This won't work right now since facebook has restricted access to even the public facebook page's data.
